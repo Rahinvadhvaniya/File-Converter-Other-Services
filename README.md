@@ -132,6 +132,61 @@ npm run lint
 npx tsc --noEmit
 ```
 
+## 🚀 Deployment
+
+This application is ready to deploy to production! See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
+### Quick Deploy to Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Rahinvadhvaniya/File-Converter-Other-Services)
+
+1. Click the button above or go to [vercel.com](https://vercel.com)
+2. Sign in with GitHub
+3. Import this repository
+4. Click "Deploy"
+5. Your site will be live in 2-3 minutes! 🎉
+
+**Your deployment URL**: `https://your-project-name.vercel.app`
+
+### Deployment Options
+
+- **Vercel** (Recommended) - Zero configuration, free tier, automatic deployments
+- **Google Cloud Run** - Containerized deployment, pay-per-use pricing
+- **Firebase Hosting** - Google ecosystem integration
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete setup guides for all platforms.
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and configure:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables for production:
+- `NEXT_PUBLIC_SITE_URL` - Your production URL
+- `NEXT_PUBLIC_ADSENSE_CLIENT_ID` - Google AdSense ID (for monetization)
+- Stripe keys (for premium subscriptions)
+
+## 💰 Monetization
+
+This application is built with monetization in mind:
+
+- **Freemium Model**: Free tier with daily limits + Premium subscriptions
+- **Google AdSense**: Display ads for free tier users
+- **Premium Plans**: Unlimited conversions, no ads, priority processing
+- **API Access**: Offer API plans for businesses
+
+See the `/pricing` page for the complete pricing structure.
+
+### Revenue Potential
+
+Based on successful file converter sites:
+- **Month 1-3**: $100-500/month (AdSense + early subscribers)
+- **Month 6-12**: $1,000-5,000/month (growing subscriber base)
+- **Year 2+**: $5,000-20,000+/month (established user base + enterprise clients)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
