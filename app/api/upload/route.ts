@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { existsSync } from "fs";
+import { validateFileSize, sanitizeFilename } from "@/lib/validation";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +12,15 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { error: "No file uploaded" },
+        { status: 400 }
+      );
+    }
+
+    // Validate file size
+    const sizeValidation = validateFileSize(file.size);
+    if (!sizeValidation.valid) {
+      return NextResponse.json(
+        { error: sizeValidation.error },
         { status: 400 }
       );
     }
@@ -25,9 +35,10 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generate unique filename
+    // Generate unique filename with sanitization
     const timestamp = Date.now();
-    const filename = `${timestamp}-${file.name}`;
+    const sanitized = sanitizeFilename(file.name);
+    const filename = `${timestamp}-${sanitized}`;
     const filepath = join(uploadsDir, filename);
 
     await writeFile(filepath, buffer);
