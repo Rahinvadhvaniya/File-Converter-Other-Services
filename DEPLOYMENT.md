@@ -317,6 +317,26 @@ Before going to production:
 
 ## 🆘 Troubleshooting
 
+### Build Stops/Fails on Vercel
+
+**If your build stops or times out:**
+1. **Simplify vercel.json**: Remove custom build commands - Vercel auto-detects Next.js
+   ```json
+   {
+     "framework": "nextjs"
+   }
+   ```
+2. **Check Node.js version**: Ensure package.json doesn't specify an incompatible version
+3. **Review build logs**: Look for actual errors (not just warnings)
+4. **Memory issues**: Upgrade to paid plan if build runs out of memory
+5. **Timeout issues**: Build should complete in 10-15 minutes
+
+**Common causes:**
+- ❌ Overriding Vercel's auto-detection with custom commands
+- ❌ Heavy dependencies causing memory issues
+- ❌ File system operations in API routes (use /tmp directory)
+- ❌ Missing dependencies in package.json
+
 ### Build Fails on Vercel
 - Check Node.js version in `package.json`
 - Ensure all dependencies are in `dependencies` not `devDependencies`
