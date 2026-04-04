@@ -145,7 +145,7 @@ export default function PdfToWordPage() {
             </li>
             <li className="flex items-start gap-3">
               <span className="font-bold text-red-600">2.</span>
-              <span>Click the "Convert to Word" button</span>
+              <span>Click the &quot;Convert to Word&quot; button</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="font-bold text-red-600">3.</span>
