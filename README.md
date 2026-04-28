@@ -1,53 +1,63 @@
 # File Converter - Online File Conversion Service
 
-A modern, free online file converter built with Next.js and TypeScript. Convert PDFs, images, and documents easily with a beautiful, responsive interface.
+A modern, free online file converter built with Next.js 15, TypeScript, and Tailwind CSS. All 12 conversion tools work entirely server-side — no external services required.
+
+## Live Tools
+
+| Tool | Route |
+|------|-------|
+| PDF to Word | `/pdf-to-word` |
+| PDF to Excel | `/pdf-to-excel` |
+| PDF to JPG | `/pdf-to-jpg` |
+| PDF to PowerPoint | `/pdf-to-ppt` |
+| Word to PDF | `/word-to-pdf` |
+| Excel to PDF | `/excel-to-pdf` |
+| JPG to PDF | `/jpg-to-pdf` |
+| Compress PDF | `/compress-pdf` |
+| Merge PDF | `/merge-pdf` |
+| Split PDF | `/split-pdf` |
+| Rotate PDF | `/rotate-pdf` |
+| Unlock PDF | `/unlock-pdf` |
 
 ## Features
 
-- 📄 **PDF Conversions**: Convert PDF to Word, Excel, PowerPoint, JPG, and more
-- 🖼️ **Image Tools**: Convert between JPG, PNG, WebP, and other image formats
-- 📝 **Document Conversion**: Word, Excel, PowerPoint format conversions
-- 🗜️ **File Compression**: Reduce file sizes efficiently
-- ✂️ **PDF Tools**: Merge, split, rotate, and organize PDF pages
-- 🚀 **Fast & Easy**: Simple drag-and-drop interface
-- 🔒 **Secure**: Files are encrypted and automatically deleted after processing
-- ☁️ **Cloud-Based**: No installation required, works on any device
+- 🚀 **12 real conversion tools** — all functional, no demo stubs
+- 📁 **Drag & drop interface** — powered by react-dropzone
+- 🔒 **Secure** — files auto-deleted after 1 hour
+- ✅ **50MB file size limit** with server-side validation
+- 💰 **Pricing page** at `/pricing` with Free / Pro / Enterprise tiers
+- ☁️ **Vercel-ready** — includes `vercel.json` configuration
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 with App Router
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **File Upload**: react-dropzone
 - **PDF Processing**: pdf-lib
-- **Image Processing**: Sharp
+- **Image Processing**: sharp
+- **Word (.docx)**: docx, mammoth
+- **Excel (.xlsx)**: exceljs
+- **PowerPoint (.pptx)**: pptxgenjs
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ installed
-- npm or yarn package manager
+- Node.js 18+
+- npm
 
 ### Installation
 
-1. Clone the repository:
 ```bash
 git clone https://github.com/Rahinvadhvaniya/File-Converter-Other-Services.git
 cd File-Converter-Other-Services
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
-
-3. Run the development server:
-```bash
+cp .env.example .env.local
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open [http://localhost:3000](http://localhost:3000).
 
 ### Build for Production
 
@@ -59,93 +69,70 @@ npm start
 ## Project Structure
 
 ```
-├── app/                    # Next.js app directory
-│   ├── api/               # API routes
-│   │   ├── upload/        # File upload endpoint
-│   │   └── convert/       # File conversion endpoint
-│   ├── pdf-to-word/       # PDF to Word conversion page
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page
-│   └── globals.css        # Global styles
-├── components/            # React components
-│   ├── Header.tsx         # Navigation header
-│   ├── Footer.tsx         # Footer component
-│   ├── FileUploader.tsx   # File upload component
-│   └── FeatureGrid.tsx    # Feature cards grid
-├── lib/                   # Utility functions
-├── public/               # Static assets
-└── uploads/              # Temporary file storage (auto-deleted)
+├── app/
+│   ├── api/
+│   │   ├── upload/          # POST — validate & save uploaded file
+│   │   ├── convert/         # POST — run conversion
+│   │   └── download/[filename]/  # GET — serve converted file
+│   ├── pdf-to-word/
+│   ├── pdf-to-excel/
+│   ├── pdf-to-jpg/
+│   ├── pdf-to-ppt/
+│   ├── word-to-pdf/
+│   ├── excel-to-pdf/
+│   ├── jpg-to-pdf/
+│   ├── compress-pdf/
+│   ├── merge-pdf/
+│   ├── split-pdf/
+│   ├── rotate-pdf/
+│   ├── unlock-pdf/
+│   ├── pricing/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── ConverterTool.tsx    # Reusable converter UI (upload → convert → download)
+│   ├── AdSense.tsx          # Google AdSense component
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   ├── FileUploader.tsx
+│   └── FeatureGrid.tsx
+├── lib/
+│   ├── converters.ts        # All 12 conversion implementations
+│   ├── validation.ts        # File size & filename sanitization
+│   └── cleanup.ts           # Auto-delete old files (>1 hour)
+├── .env.example
+├── vercel.json
+└── DEPLOYMENT.md
 ```
-
-## Available Conversion Tools
-
-### PDF Tools
-- PDF to Word
-- PDF to Excel
-- PDF to PowerPoint
-- PDF to JPG
-- Compress PDF
-- Merge PDF
-- Split PDF
-- Rotate PDF
-- Unlock PDF
-
-### Document Conversions
-- Word to PDF
-- Excel to PDF
-- PowerPoint to PDF
-
-### Image Conversions
-- JPG to PDF
-- PNG to PDF
-- Image format conversions
 
 ## API Endpoints
 
-### POST /api/upload
-Upload a file for conversion
-- **Body**: FormData with file
+### POST `/api/upload`
+- **Body**: `FormData` with `file`
 - **Response**: `{ success, filename, originalName, size, type }`
 
-### POST /api/convert
-Convert uploaded file
-- **Body**: `{ filename, conversionType }`
-- **Response**: `{ success, message, downloadUrl }`
+### POST `/api/convert`
+- **Body**: `{ filename, conversionType, options? }`
+- **Response**: `{ success, message, downloadUrl, filename }`
 
-## Development
+### GET `/api/download/[filename]`
+- Serves converted file from the `outputs/` directory
 
-### Running in Development Mode
+## Environment Variables
 
-```bash
-npm run dev
-```
+See `.env.example` for all available variables:
 
-### Linting
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense publisher ID |
+| `STRIPE_SECRET_KEY` | Stripe secret key |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
 
-```bash
-npm run lint
-```
+## Deployment
 
-### Type Checking
-
-```bash
-npx tsc --noEmit
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full instructions including Vercel one-click deploy.
 
 ## License
 
-This project is open source and available under the MIT License.
-
-## Acknowledgments
-
-- Inspired by [ilovepdf.com](https://www.ilovepdf.com/)
-- Built with modern web technologies
-- Designed for performance and user experience
-
-## Contact
-
-For questions or support, please open an issue on GitHub.
+MIT
