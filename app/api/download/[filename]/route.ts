@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
-import { join } from "path";
+import { join, resolve } from "path";
 import { existsSync } from "fs";
 import { sanitizeFilename } from "@/lib/validation";
 
@@ -11,8 +11,12 @@ export async function GET(
   try {
     const { filename } = await params;
     const safeFilename = sanitizeFilename(filename);
-    const outputsDir = join(process.cwd(), "outputs");
-    const filePath = join(outputsDir, safeFilename);
+    const outputsDir = resolve(join(process.cwd(), "outputs"));
+    const filePath = resolve(join(outputsDir, safeFilename));
+
+    if (!filePath.startsWith(outputsDir + "/") && filePath !== outputsDir) {
+      return NextResponse.json({ error: "Invalid path" }, { status: 400 });
+    }
 
     if (!existsSync(filePath)) {
       return NextResponse.json({ error: "File not found" }, { status: 404 });

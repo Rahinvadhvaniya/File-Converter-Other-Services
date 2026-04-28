@@ -33,7 +33,7 @@ const plans = [
     ],
     notIncluded: ["API access", "Team management"],
     cta: "Start Pro Plan",
-    href: "#",
+    href: "/?signup=pro",
     highlight: true,
     badge: "Most Popular",
   },
@@ -53,7 +53,7 @@ const plans = [
     ],
     notIncluded: [],
     cta: "Contact Sales",
-    href: "#",
+    href: "/?contact=enterprise",
     highlight: false,
   },
 ];

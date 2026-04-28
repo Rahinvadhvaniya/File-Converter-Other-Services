@@ -1,6 +1,6 @@
 import { PDFDocument, degrees } from "pdf-lib";
 import { readFile, writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { join, basename, extname } from "path";
 import { existsSync } from "fs";
 import sharp from "sharp";
 import { Document, Packer, Paragraph, TextRun } from "docx";
@@ -338,11 +338,14 @@ async function convertExcelToPdf(inputPath: string, outputPath: string): Promise
 async function convertUnlockPdf(
   inputPath: string,
   outputPath: string,
-  _password?: string
+  password?: string
 ): Promise<void> {
   const pdfBytes = await readFile(inputPath);
 
-  const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pdfDoc = await PDFDocument.load(pdfBytes, {
+    ignoreEncryption: true,
+    ...(password ? { password } : {}),
+  });
 
   const unlockedBytes = await pdfDoc.save();
   await writeFile(outputPath, unlockedBytes);
@@ -371,7 +374,7 @@ export async function convertFile(
   const outputsDir = join(process.cwd(), "outputs");
   if (!existsSync(outputsDir)) await mkdir(outputsDir, { recursive: true });
 
-  const baseName = inputPath.split("/").pop()!.replace(/\.[^.]+$/, "");
+  const baseName = basename(inputPath, extname(inputPath));
   const ext = extensionMap[conversionType];
   const outputFilename = `${baseName}-${conversionType}.${ext}`;
   const outputPath = join(outputsDir, outputFilename);

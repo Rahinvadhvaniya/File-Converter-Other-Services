@@ -305,7 +305,7 @@ export default function ConverterTool({
               </p>
               <a
                 href={downloadUrl}
-                download={outputFilename ?? undefined}
+                download={outputFilename || ""}
                 className="inline-block bg-gradient-to-r from-red-600 to-pink-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:from-red-700 hover:to-pink-700 transition mb-4"
               >
                 ⬇ Download {outputFormat}
