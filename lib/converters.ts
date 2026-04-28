@@ -79,7 +79,7 @@ async function convertPdfToExcel(inputPath: string, outputPath: string): Promise
     { header: "Value", key: "value", width: 40 },
   ];
 
-  sheet.addRow({ property: "Source File", value: inputPath.split("/").pop() });
+  sheet.addRow({ property: "Source File", value: basename(inputPath) });
   sheet.addRow({ property: "Page Count", value: pageCount });
   sheet.addRow({ property: "Conversion Date", value: new Date().toISOString() });
   sheet.addRow({ property: "Note", value: "PDF converted to Excel format" });
@@ -337,15 +337,11 @@ async function convertExcelToPdf(inputPath: string, outputPath: string): Promise
 
 async function convertUnlockPdf(
   inputPath: string,
-  outputPath: string,
-  password?: string
+  outputPath: string
 ): Promise<void> {
   const pdfBytes = await readFile(inputPath);
 
-  const pdfDoc = await PDFDocument.load(pdfBytes, {
-    ignoreEncryption: true,
-    ...(password ? { password } : {}),
-  });
+  const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
 
   const unlockedBytes = await pdfDoc.save();
   await writeFile(outputPath, unlockedBytes);
@@ -418,7 +414,7 @@ export async function convertFile(
       await convertExcelToPdf(inputPath, outputPath);
       break;
     case "unlock-pdf":
-      await convertUnlockPdf(inputPath, outputPath, options?.password);
+      await convertUnlockPdf(inputPath, outputPath);
       break;
   }
 

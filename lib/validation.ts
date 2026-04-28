@@ -1,3 +1,5 @@
+import { basename } from "path";
+
 export const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 export function validateFile(file: { size: number; name: string; type?: string }): void {
@@ -7,9 +9,10 @@ export function validateFile(file: { size: number; name: string; type?: string }
 }
 
 export function sanitizeFilename(filename: string): string {
-  if (filename.includes("..")) throw new Error("Invalid filename");
-  const name = filename.replace(/[/\\]/g, "").replace(/\s+/g, "_");
-  const safe = name.replace(/[^a-zA-Z0-9._\-]/g, "");
-  if (!safe || safe.startsWith(".")) throw new Error("Invalid filename");
+  const base = basename(filename).replace(/\s+/g, "_");
+  const safe = base.replace(/[^a-zA-Z0-9._\-]/g, "");
+  if (!safe || safe.startsWith(".") || safe.includes("..")) {
+    throw new Error("Invalid filename");
+  }
   return safe;
 }

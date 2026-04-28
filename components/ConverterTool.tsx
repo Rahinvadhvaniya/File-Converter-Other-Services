@@ -293,7 +293,7 @@ export default function ConverterTool({
               <div className="mt-4 flex flex-wrap gap-3 justify-center text-sm text-gray-500">
                 <span>✓ Files deleted after conversion</span>
                 <span>✓ Max file size: 50MB</span>
-                <span>✓ Secure &amp; private</span>
+                <span>✓ Secure & private</span>
               </div>
             </>
           ) : (

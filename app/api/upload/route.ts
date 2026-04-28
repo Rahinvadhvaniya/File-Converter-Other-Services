@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const filepath = join(uploadsDir, filename);
     await writeFile(filepath, buffer);
 
-    cleanupOldFiles().catch(console.error);
+    cleanupOldFiles().catch((err) => console.error("Cleanup failed:", err));
 
     return NextResponse.json({
       success: true,

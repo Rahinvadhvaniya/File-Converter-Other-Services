@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
-import { join, resolve } from "path";
+import { join, resolve, sep } from "path";
 import { existsSync } from "fs";
 import { sanitizeFilename } from "@/lib/validation";
 
@@ -14,7 +14,7 @@ export async function GET(
     const outputsDir = resolve(join(process.cwd(), "outputs"));
     const filePath = resolve(join(outputsDir, safeFilename));
 
-    if (!filePath.startsWith(outputsDir + "/") && filePath !== outputsDir) {
+    if (!filePath.startsWith(outputsDir + sep) && filePath !== outputsDir) {
       return NextResponse.json({ error: "Invalid path" }, { status: 400 });
     }
 
