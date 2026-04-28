@@ -14,7 +14,6 @@ interface ConverterToolProps {
   steps: string[];
   outputFormat: string;
   multiple?: boolean;
-  options?: Record<string, string>;
 }
 
 export default function ConverterTool({

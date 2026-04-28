@@ -321,12 +321,11 @@ async function convertExcelToPdf(inputPath: string, outputPath: string): Promise
     worksheet.eachRow({ includeEmpty: false }, (row) => {
       if (y < margin) return;
       let x = margin;
-      row.eachCell({ includeEmpty: true }, (cell, colNum) => {
+      row.eachCell({ includeEmpty: true }, (cell, _colNum) => {
         if (x + cellWidth > pageWidth - margin) return;
         const val = cell.text ? cell.text.toString().slice(0, 15) : "";
         page.drawText(val, { x, y, size: fontSize });
         x += cellWidth;
-        void colNum;
       });
       y -= rowHeight;
     });
@@ -339,17 +338,11 @@ async function convertExcelToPdf(inputPath: string, outputPath: string): Promise
 async function convertUnlockPdf(
   inputPath: string,
   outputPath: string,
-  password?: string
+  _password?: string
 ): Promise<void> {
   const pdfBytes = await readFile(inputPath);
 
-  let pdfDoc: PDFDocument;
-  try {
-    pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
-  } catch {
-    pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
-  }
-  void password;
+  const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
 
   const unlockedBytes = await pdfDoc.save();
   await writeFile(outputPath, unlockedBytes);
