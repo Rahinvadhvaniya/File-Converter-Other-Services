@@ -14,7 +14,7 @@ export async function GET(
     const outputsDir = resolve(join(process.cwd(), "outputs"));
     const filePath = resolve(join(outputsDir, safeFilename));
 
-    if (!filePath.startsWith(outputsDir + sep) && filePath !== outputsDir) {
+    if (!filePath.startsWith(outputsDir + sep)) {
       return NextResponse.json({ error: "Invalid path" }, { status: 400 });
     }
 

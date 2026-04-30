@@ -10,8 +10,9 @@ export function validateFile(file: { size: number; name: string; type?: string }
 
 export function sanitizeFilename(filename: string): string {
   const base = basename(filename).replace(/\s+/g, "_");
+  if (base.includes("..")) throw new Error("Invalid filename");
   const safe = base.replace(/[^a-zA-Z0-9._\-]/g, "");
-  if (!safe || safe.startsWith(".") || safe.includes("..")) {
+  if (!safe || safe.startsWith(".")) {
     throw new Error("Invalid filename");
   }
   return safe;
